@@ -92,7 +92,7 @@ interface PuterStore {
     flush: () => Promise<boolean | undefined>;
   };
 
-  init: () => void;
+  init: () => (() => void);
   clearError: () => void;
 }
 
@@ -241,12 +241,12 @@ export const usePuterStore = create<PuterStore>((set, get) => {
     }
   };
 
-  const init = (): void => {
+  const init = (): (() => void) => {
     const puter = getPuter();
     if (puter) {
       set({ puterReady: true });
       checkAuthStatus();
-      return;
+      return () => {}; // Return cleanup function even if no cleanup needed
     }
 
     const interval = setInterval(() => {
@@ -257,12 +257,18 @@ export const usePuterStore = create<PuterStore>((set, get) => {
       }
     }, 100);
 
-    setTimeout(() => {
+    const timeout = setTimeout(() => {
       clearInterval(interval);
       if (!getPuter()) {
         setError("Puter.js failed to load within 10 seconds");
       }
     }, 10000);
+
+    // Return cleanup function to clear interval and timeout
+    return () => {
+      clearInterval(interval);
+      clearTimeout(timeout);
+    };
   };
 
   const write = async (path: string, data: string | File | Blob) => {
