@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { useDropzone, type FileWithPath } from 'react-dropzone';
+import { useDropzone } from 'react-dropzone';
 import { formatSize } from 'lib/utils';
 
 interface FileUploaderProps {
