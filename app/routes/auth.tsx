@@ -23,10 +23,8 @@ const Auth = () => {
       <div className='gradient-border shadow-lg'>
         <section className='flex flex-col gap-8 bg-white rounded-2xl p-10'>
           <div className='flex flex-col items-center gap-2 text-center'>
-            <p className='md:text-5xl text-3xl font-semibold'>Welcome</p>
-            <p className='md:text-2xl text-lg'>
-              Log In to Continue Your Job Journey
-            </p>
+            <h1>Welcome</h1>
+            <h2>Log In to Continue Your Job Journey</h2>
           </div>
           <div>
             {isLoading ? (
