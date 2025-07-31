@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router';
 import Navbar from '~/components/Navbar';
 import type { Route } from './+types/home';
 import ResumeCard from '~/components/ResumeCard';
+import SignOut from '~/components/SignOut';
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -43,6 +44,7 @@ export default function Home() {
 
   return (
     <main className="bg-[url('/images/bg-main.svg')] bg-cover">
+      <SignOut />
       <Navbar />
       <section className='main-section'>
         <div className='page-heading py-16'>
