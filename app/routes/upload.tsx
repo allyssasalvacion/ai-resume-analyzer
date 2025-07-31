@@ -63,10 +63,22 @@ const Upload = () => {
 
     setStatusText('Analyzing...');
 
-    const feedback = await ai.feedback(
-      uploadedFile.path,
-      prepareInstructions({ jobTitle, jobDescription })
-    );
+    let feedback;
+    try {
+      feedback = await ai.feedback(
+        uploadedFile.path,
+        prepareInstructions({ jobTitle, jobDescription })
+      );
+    } catch (err: any) {
+      console.error('AI feedback error:', err);
+      if (err?.error?.delegate === 'usage-limited-chat') {
+        alert('Error: AI model is not available or quota exceeded');
+      } else {
+        setStatusText('Error: Failed to analyze resume');
+      }
+      setIsProcessing(false);
+      return;
+    }
 
     if (!feedback) return setStatusText('Error: Failed to analyze resume');
 
