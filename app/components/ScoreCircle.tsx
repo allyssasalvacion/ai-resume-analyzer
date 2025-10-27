@@ -1,3 +1,5 @@
+import { useMemo } from 'react';
+
 const ScoreCircle = ({ score = 75 }: { score: number }) => {
   const radius = 40;
   const stroke = 8;
@@ -5,6 +7,9 @@ const ScoreCircle = ({ score = 75 }: { score: number }) => {
   const circumference = 2 * Math.PI * normalizedRadius;
   const progress = score / 100;
   const strokeDashoffset = circumference * (1 - progress);
+  
+  // Generate unique ID to prevent conflicts when multiple ScoreCircle components are rendered
+  const gradientId = useMemo(() => `grad-${Math.random().toString(36).substr(2, 9)}`, []);
 
   return (
     <div className='relative w-[100px] h-[100px]'>
@@ -25,7 +30,7 @@ const ScoreCircle = ({ score = 75 }: { score: number }) => {
         />
         {/* Partial circle with gradient */}
         <defs>
-          <linearGradient id='grad' x1='1' y1='0' x2='0' y2='1'>
+          <linearGradient id={gradientId} x1='1' y1='0' x2='0' y2='1'>
             <stop offset='0%' stopColor='#FF97AD' />
             <stop offset='100%' stopColor='#5171FF' />
           </linearGradient>
@@ -34,7 +39,7 @@ const ScoreCircle = ({ score = 75 }: { score: number }) => {
           cx='50'
           cy='50'
           r={normalizedRadius}
-          stroke='url(#grad)'
+          stroke={`url(#${gradientId})`}
           strokeWidth={stroke}
           fill='transparent'
           strokeDasharray={circumference}
